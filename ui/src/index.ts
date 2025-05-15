@@ -56,16 +56,7 @@ export default definePlugin({
                 } catch (error) {
                   if (error instanceof AxiosError) {
                     const data = error.response?.data;
-                    let msg = '同步失败，请重试';
-                    if (typeof data === 'string') {
-                      msg = data;
-                    } else if (data?.detail) {
-                      msg = data.detail;
-                    } else if (data?.message) {
-                      msg = data.message;
-                    } else if (data?.error) {
-                      msg = data.error;
-                    }
+                    const msg = typeof data === 'string' ? data : '同步失败，请重试';
                     Toast.error(msg);
                   }
                 }
