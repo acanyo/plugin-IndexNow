@@ -17,6 +17,7 @@ export default definePlugin({
         meta: {
           title: "IndexNow推送日志",
           searchable: true,
+          permissions: ["plugin:indexnow:view"],
           menu: {
             name: "IndexNow推送日志",
             group: "工具",

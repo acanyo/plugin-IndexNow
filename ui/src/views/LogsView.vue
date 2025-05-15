@@ -140,8 +140,9 @@ function copyMessage(msg: string) {
       </VSpace>
     </template>
   </VPageHeader>
-
-  <div class="m-0 md:m-4">
+  <div class="m-0 md:m-4"
+       v-permission="['plugin:indexnow:manage']"
+  >
     <VCard :body-class="['!p-0']">
       <div class="relative w-full">
         <VLoading v-if="isLoading" />
