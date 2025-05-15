@@ -29,7 +29,7 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
     private final SettingConfigGetter settingConfigGetter;
     private final WebClient webClient;
     private final ExtensionClient extensionClient;
-    private static final Path staticDir = Paths.get(System.getProperty("user.home"), "/.halo2/");
+    private static final Path staticDir = Paths.get(System.getProperty("user.home"), "/.halo2/static");
     private final String indexNowUrl = "https://api.indexnow.org/IndexNow";
 
     @Override
@@ -43,8 +43,10 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
                 
                 return Mono.fromCallable(() -> {
                     Path keyFile = staticDir.resolve(indexNowKey + ".txt");
-                    if (!Files.exists(keyFile)) {
+                    if (!Files.exists(staticDir)) {
                         Files.createDirectories(staticDir);
+                    }
+                    if (!Files.exists(keyFile)) {
                         Files.writeString(keyFile, indexNowKey);
                     }
                     return null;
