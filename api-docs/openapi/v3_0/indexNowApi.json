@@ -1,0 +1,752 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Halo",
+    "version" : "2.20.15"
+  },
+  "servers" : [ {
+    "url" : "http://localhost:49273",
+    "description" : "Generated server url"
+  } ],
+  "security" : [ {
+    "basicAuth" : [ ],
+    "bearerAuth" : [ ]
+  } ],
+  "paths" : {
+    "/apis/api.indexnow.lik.cc/v1alpha1/push" : {
+      "post" : {
+        "description" : "推送文章到 IndexNow",
+        "operationId" : "Push IndexNow",
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/Post"
+              }
+            }
+          },
+          "description" : "要推送的文章",
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "推送成功"
+          },
+          "400" : {
+            "description" : "请求格式错误"
+          },
+          "403" : {
+            "description" : "key 无效"
+          },
+          "422" : {
+            "description" : "URL 不属于该主机或 key 不匹配"
+          },
+          "429" : {
+            "description" : "请求过于频繁"
+          }
+        },
+        "tags" : [ "api.indexnow.lik.cc/v1alpha1/indexnow" ]
+      }
+    },
+    "/apis/indexnow.lik.cc/v1alpha1/handsomeindexnowlogs" : {
+      "get" : {
+        "description" : "List HandsomeIndexNowLogs",
+        "operationId" : "listHandsomeIndexNowLogs",
+        "parameters" : [ {
+          "description" : "Page number. Default is 0.",
+          "in" : "query",
+          "name" : "page",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "description" : "Size number. Default is 0.",
+          "in" : "query",
+          "name" : "size",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int32"
+          }
+        }, {
+          "description" : "Label selector. e.g.: hidden!=true",
+          "in" : "query",
+          "name" : "labelSelector",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "description" : "Field selector. e.g.: metadata.name==halo",
+          "in" : "query",
+          "name" : "fieldSelector",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }, {
+          "description" : "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+          "in" : "query",
+          "name" : "sort",
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HandsomeIndexNowLogsList"
+                }
+              }
+            },
+            "description" : "Response handsomeindexnowlogs"
+          }
+        },
+        "tags" : [ "HandsomeIndexNowLogsV1alpha1" ]
+      },
+      "post" : {
+        "description" : "Create HandsomeIndexNowLogs",
+        "operationId" : "createHandsomeIndexNowLogs",
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/HandsomeIndexNowLogs"
+              }
+            }
+          },
+          "description" : "Fresh handsomeindexnowlogs"
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HandsomeIndexNowLogs"
+                }
+              }
+            },
+            "description" : "Response handsomeindexnowlogs created just now"
+          }
+        },
+        "tags" : [ "HandsomeIndexNowLogsV1alpha1" ]
+      }
+    },
+    "/apis/indexnow.lik.cc/v1alpha1/handsomeindexnowlogs/{name}" : {
+      "delete" : {
+        "description" : "Delete HandsomeIndexNowLogs",
+        "operationId" : "deleteHandsomeIndexNowLogs",
+        "parameters" : [ {
+          "description" : "Name of handsomeindexnowlogs",
+          "in" : "path",
+          "name" : "name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response handsomeindexnowlogs deleted just now"
+          }
+        },
+        "tags" : [ "HandsomeIndexNowLogsV1alpha1" ]
+      },
+      "get" : {
+        "description" : "Get HandsomeIndexNowLogs",
+        "operationId" : "getHandsomeIndexNowLogs",
+        "parameters" : [ {
+          "description" : "Name of handsomeindexnowlogs",
+          "in" : "path",
+          "name" : "name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HandsomeIndexNowLogs"
+                }
+              }
+            },
+            "description" : "Response single handsomeindexnowlogs"
+          }
+        },
+        "tags" : [ "HandsomeIndexNowLogsV1alpha1" ]
+      },
+      "patch" : {
+        "description" : "Patch HandsomeIndexNowLogs",
+        "operationId" : "patchHandsomeIndexNowLogs",
+        "parameters" : [ {
+          "description" : "Name of handsomeindexnowlogs",
+          "in" : "path",
+          "name" : "name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json-patch+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/JsonPatch"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HandsomeIndexNowLogs"
+                }
+              }
+            },
+            "description" : "Response handsomeindexnowlogs patched just now"
+          }
+        },
+        "tags" : [ "HandsomeIndexNowLogsV1alpha1" ]
+      },
+      "put" : {
+        "description" : "Update HandsomeIndexNowLogs",
+        "operationId" : "updateHandsomeIndexNowLogs",
+        "parameters" : [ {
+          "description" : "Name of handsomeindexnowlogs",
+          "in" : "path",
+          "name" : "name",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "*/*" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/HandsomeIndexNowLogs"
+              }
+            }
+          },
+          "description" : "Updated handsomeindexnowlogs"
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/HandsomeIndexNowLogs"
+                }
+              }
+            },
+            "description" : "Response handsomeindexnowlogs updated just now"
+          }
+        },
+        "tags" : [ "HandsomeIndexNowLogsV1alpha1" ]
+      }
+    }
+  },
+  "components" : {
+    "schemas" : {
+      "AddOperation" : {
+        "required" : [ "op", "path", "value" ],
+        "type" : "object",
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "add" ]
+          },
+          "path" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          },
+          "value" : {
+            "description" : "Value can be any JSON value"
+          }
+        }
+      },
+      "Condition" : {
+        "required" : [ "lastTransitionTime", "status", "type" ],
+        "type" : "object",
+        "properties" : {
+          "lastTransitionTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "message" : {
+            "maxLength" : 32768,
+            "type" : "string"
+          },
+          "reason" : {
+            "maxLength" : 1024,
+            "pattern" : "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "TRUE", "FALSE", "UNKNOWN" ]
+          },
+          "type" : {
+            "maxLength" : 316,
+            "pattern" : "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
+            "type" : "string"
+          }
+        }
+      },
+      "CopyOperation" : {
+        "required" : [ "op", "from", "path" ],
+        "type" : "object",
+        "properties" : {
+          "from" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          },
+          "op" : {
+            "type" : "string",
+            "enum" : [ "copy" ]
+          },
+          "path" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          }
+        }
+      },
+      "Excerpt" : {
+        "required" : [ "autoGenerate" ],
+        "type" : "object",
+        "properties" : {
+          "autoGenerate" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "raw" : {
+            "type" : "string"
+          }
+        }
+      },
+      "HandsomeIndexNowLogs" : {
+        "required" : [ "apiVersion", "kind", "logsSpec", "metadata" ],
+        "type" : "object",
+        "properties" : {
+          "apiVersion" : {
+            "type" : "string"
+          },
+          "kind" : {
+            "type" : "string"
+          },
+          "logsSpec" : {
+            "$ref" : "#/components/schemas/indexNowLogsSpec"
+          },
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
+          }
+        }
+      },
+      "HandsomeIndexNowLogsList" : {
+        "required" : [ "first", "hasNext", "hasPrevious", "items", "last", "page", "size", "total", "totalPages" ],
+        "type" : "object",
+        "properties" : {
+          "first" : {
+            "type" : "boolean",
+            "description" : "Indicates whether current page is the first page."
+          },
+          "hasNext" : {
+            "type" : "boolean",
+            "description" : "Indicates whether current page has previous page."
+          },
+          "hasPrevious" : {
+            "type" : "boolean",
+            "description" : "Indicates whether current page has previous page."
+          },
+          "items" : {
+            "type" : "array",
+            "description" : "A chunk of items.",
+            "items" : {
+              "$ref" : "#/components/schemas/HandsomeIndexNowLogs"
+            }
+          },
+          "last" : {
+            "type" : "boolean",
+            "description" : "Indicates whether current page is the last page."
+          },
+          "page" : {
+            "type" : "integer",
+            "description" : "Page number, starts from 1. If not set or equal to 0, it means no pagination.",
+            "format" : "int32"
+          },
+          "size" : {
+            "type" : "integer",
+            "description" : "Size of each page. If not set or equal to 0, it means no pagination.",
+            "format" : "int32"
+          },
+          "total" : {
+            "type" : "integer",
+            "description" : "Total elements.",
+            "format" : "int64"
+          },
+          "totalPages" : {
+            "type" : "integer",
+            "description" : "Indicates total pages.",
+            "format" : "int64"
+          }
+        }
+      },
+      "JsonPatch" : {
+        "minItems" : 1,
+        "uniqueItems" : true,
+        "type" : "array",
+        "description" : "JSON schema for JSONPatch operations",
+        "items" : {
+          "oneOf" : [ {
+            "$ref" : "#/components/schemas/AddOperation"
+          }, {
+            "$ref" : "#/components/schemas/ReplaceOperation"
+          }, {
+            "$ref" : "#/components/schemas/TestOperation"
+          }, {
+            "$ref" : "#/components/schemas/RemoveOperation"
+          }, {
+            "$ref" : "#/components/schemas/MoveOperation"
+          }, {
+            "$ref" : "#/components/schemas/CopyOperation"
+          } ]
+        }
+      },
+      "Metadata" : {
+        "required" : [ "name" ],
+        "type" : "object",
+        "properties" : {
+          "annotations" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "creationTimestamp" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "deletionTimestamp" : {
+            "type" : "string",
+            "format" : "date-time",
+            "nullable" : true
+          },
+          "finalizers" : {
+            "uniqueItems" : true,
+            "type" : "array",
+            "nullable" : true,
+            "items" : {
+              "type" : "string",
+              "nullable" : true
+            }
+          },
+          "generateName" : {
+            "type" : "string",
+            "description" : "The name field will be generated automatically according to the given generateName field"
+          },
+          "labels" : {
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "string"
+            }
+          },
+          "name" : {
+            "type" : "string",
+            "description" : "Metadata name"
+          },
+          "version" : {
+            "type" : "integer",
+            "format" : "int64",
+            "nullable" : true
+          }
+        }
+      },
+      "MoveOperation" : {
+        "required" : [ "op", "from", "path" ],
+        "type" : "object",
+        "properties" : {
+          "from" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          },
+          "op" : {
+            "type" : "string",
+            "enum" : [ "move" ]
+          },
+          "path" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          }
+        }
+      },
+      "Post" : {
+        "required" : [ "apiVersion", "kind", "metadata", "spec" ],
+        "type" : "object",
+        "properties" : {
+          "apiVersion" : {
+            "type" : "string"
+          },
+          "kind" : {
+            "type" : "string"
+          },
+          "metadata" : {
+            "$ref" : "#/components/schemas/Metadata"
+          },
+          "spec" : {
+            "$ref" : "#/components/schemas/PostSpec"
+          },
+          "status" : {
+            "$ref" : "#/components/schemas/PostStatus"
+          }
+        }
+      },
+      "PostSpec" : {
+        "required" : [ "allowComment", "deleted", "excerpt", "pinned", "priority", "publish", "slug", "title", "visible" ],
+        "type" : "object",
+        "properties" : {
+          "allowComment" : {
+            "type" : "boolean",
+            "default" : true
+          },
+          "baseSnapshot" : {
+            "type" : "string"
+          },
+          "categories" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "cover" : {
+            "type" : "string"
+          },
+          "deleted" : {
+            "type" : "boolean",
+            "default" : false
+          },
+          "excerpt" : {
+            "$ref" : "#/components/schemas/Excerpt"
+          },
+          "headSnapshot" : {
+            "type" : "string"
+          },
+          "htmlMetas" : {
+            "type" : "array",
+            "items" : {
+              "type" : "object",
+              "additionalProperties" : {
+                "type" : "string"
+              }
+            }
+          },
+          "owner" : {
+            "type" : "string"
+          },
+          "pinned" : {
+            "type" : "boolean",
+            "default" : false
+          },
+          "priority" : {
+            "type" : "integer",
+            "format" : "int32",
+            "default" : 0
+          },
+          "publish" : {
+            "type" : "boolean",
+            "default" : false
+          },
+          "publishTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "releaseSnapshot" : {
+            "type" : "string"
+          },
+          "slug" : {
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "tags" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "template" : {
+            "type" : "string"
+          },
+          "title" : {
+            "minLength" : 1,
+            "type" : "string"
+          },
+          "visible" : {
+            "type" : "string",
+            "default" : "PUBLIC",
+            "enum" : [ "PUBLIC", "INTERNAL", "PRIVATE" ]
+          }
+        }
+      },
+      "PostStatus" : {
+        "type" : "object",
+        "properties" : {
+          "commentsCount" : {
+            "type" : "integer",
+            "format" : "int32"
+          },
+          "conditions" : {
+            "type" : "array",
+            "properties" : {
+              "empty" : {
+                "type" : "boolean"
+              }
+            },
+            "items" : {
+              "$ref" : "#/components/schemas/Condition"
+            }
+          },
+          "contributors" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "excerpt" : {
+            "type" : "string"
+          },
+          "hideFromList" : {
+            "type" : "boolean"
+          },
+          "inProgress" : {
+            "type" : "boolean"
+          },
+          "lastModifyTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "observedVersion" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "permalink" : {
+            "type" : "string"
+          },
+          "phase" : {
+            "type" : "string"
+          }
+        }
+      },
+      "RemoveOperation" : {
+        "required" : [ "op", "path" ],
+        "type" : "object",
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "remove" ]
+          },
+          "path" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          }
+        }
+      },
+      "ReplaceOperation" : {
+        "required" : [ "op", "path", "value" ],
+        "type" : "object",
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "replace" ]
+          },
+          "path" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          },
+          "value" : {
+            "description" : "Value can be any JSON value"
+          }
+        }
+      },
+      "TestOperation" : {
+        "required" : [ "op", "path", "value" ],
+        "type" : "object",
+        "properties" : {
+          "op" : {
+            "type" : "string",
+            "enum" : [ "test" ]
+          },
+          "path" : {
+            "pattern" : "^(/[^/~]*(~[01][^/~]*)*)*$",
+            "type" : "string",
+            "description" : "A JSON Pointer path pointing to the location to move/copy from.",
+            "example" : "/a/b/c"
+          },
+          "value" : {
+            "description" : "Value can be any JSON value"
+          }
+        }
+      },
+      "indexNowLogsSpec" : {
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "type" : "string"
+          },
+          "pushTime" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "pushUrl" : {
+            "type" : "string"
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "basicAuth" : {
+        "scheme" : "basic",
+        "type" : "http"
+      },
+      "bearerAuth" : {
+        "bearerFormat" : "JWT",
+        "scheme" : "bearer",
+        "type" : "http"
+      }
+    }
+  }
+}

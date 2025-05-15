@@ -58,3 +58,39 @@ halo {
     // 控制台会挂起，等待点击 Attach debugger 按钮
     suspend = true
 }
+haloPlugin {
+    openApi {
+        outputDir = file("$rootDir/api-docs/openapi/v3_0")
+        // 用于定义 API 分组规则
+        groupingRules {
+            // 此名称为 group name，定义后 groupedApiMappings 中的 /v3/api-docs/ 后的名称需要与之相同，要避免与 halo 中已经存在的 group 相同避免生成后出现与插件无关的 API
+            indexNowApi {
+                // 分组显示名称
+                displayName = 'Extension API for indexNowApi'
+                // 分组的 API 规则
+                pathsToMatch = ['/apis/indexnow.lik.cc/v1alpha1/**',
+                                '/apis/api.indexnow.lik.cc/v1alpha1/push/**'
+                ]
+            }
+        }
+        groupedApiMappings = [
+                '/v3/api-docs/indexNowApi': 'indexNowApi.json'
+        ]
+        generator {
+            // 默认配置可缺省
+            outputDir = file("${projectDir}/ui/src/api/generated")
+            // 默认配置可缺省
+            additionalProperties = [
+                    useES6: true,
+                    useSingleRequestParameter: true,
+                    withSeparateModelsAndApi: true,
+                    apiPackage: "api",
+                    modelPackage: "models"
+            ]
+            // 默认配置可缺省
+            typeMappings = [
+                    set: "Array"
+            ]
+        }
+    }
+}

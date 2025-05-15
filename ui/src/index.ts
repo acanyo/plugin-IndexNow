@@ -1,6 +1,6 @@
 import { definePlugin } from "@halo-dev/console-shared";
-import HomeView from "./views/HomeView.vue";
-import {Dialog, IconPlug, Toast, VDropdownDivider, VDropdownItem} from "@halo-dev/components";
+import LogsView from "./views/LogsView.vue";
+import {Dialog, IconUpload, Toast, VDropdownItem} from "@halo-dev/components";
 import { markRaw } from "vue";
 import type { ListedPost } from "@halo-dev/api-client";
 import axios, {AxiosError} from "axios";
@@ -9,18 +9,18 @@ export default definePlugin({
   components: {},
   routes: [
     {
-      parentName: "Root",
+      parentName: "ToolsRoot",
       route: {
-        path: "/example",
-        name: "Example",
-        component: HomeView,
+        path: "/indexnow",
+        name: "IndexNow推送日志",
+        component: LogsView,
         meta: {
-          title: "示例页面",
+          title: "IndexNow推送日志",
           searchable: true,
           menu: {
-            name: "示例页面",
-            group: "示例分组",
-            icon: markRaw(IconPlug),
+            name: "IndexNow推送日志",
+            group: "工具",
+            icon: markRaw(IconUpload),
             priority: 0,
           },
         },

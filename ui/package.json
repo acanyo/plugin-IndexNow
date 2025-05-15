@@ -13,6 +13,10 @@
     "@halo-dev/components": "^2.17.0",
     "@halo-dev/console-shared": "^2.17.0",
     "axios": "^1.7.2",
+    "javascript-time-ago": "^2.5.11",
+    "@tanstack/vue-query": "^4.36.1",
+    "@vueuse/router": "^10.11.0",
+    "dayjs": "^1.11.13",
     "canvas-confetti": "^1.9.3",
     "vue": "^3.4.31"
   },
