@@ -1,0 +1,64 @@
+apiVersion: v1alpha1
+kind: Setting
+metadata:
+  name: plugin-indexNow-settings
+spec:
+  forms:
+    - group: basic
+      label: 基本设置
+      formSchema:
+        - $el: a
+          attrs:
+            href: "https://docs.lik.cc/"
+            class: "py-4 block"
+            target: "_blank"
+            style:
+              color: "#1890ff"
+              fontSize: "0.875em"
+              display: "flex"
+              align-items: "center"
+          children:
+            - $el: span
+              children: "查看 indexNow 帮助文档"
+            - $el: img
+              attrs:
+                src: "/plugins/indexNow/assets/static/img/link.svg"
+                width: "14px"
+                height: "14px"
+                style:
+                  margin-left: "4px"
+        - $el: span
+          children: "加入交流群"
+        - $el: img
+          attrs:
+            src: "https://www.lik.cc/upload/iShot_2025-03-03_16.03.00.png"
+            width: "100px"
+            height: "120px"
+            style:
+              margin-left: "80px"
+        - $formkit: radio
+          name: enablePush
+          id: enablePush
+          key: enablePush
+          label: 是否启用indexNow推送
+          help: 禁用后将不开启主动推送，可通过手动推送
+          value: true
+          options:
+            - label: 启用
+              value: true
+            - label: 关闭
+              value: false
+        - $formkit: text
+          name: siteUrl
+          id: siteUrl
+          key: siteUrl
+          label: 站点地址
+          placeholder: 请输入站点地址
+          help: 启用后必填，格式：http(s)://(www.)lik.cc ，结尾无需加斜杠，未填写将无法推送
+        - $formkit: text
+          name: indexNowKey
+          id: indexNowKey
+          key: indexNowKey
+          label: indexNowKey
+          placeholder: 请输入indexNowKey
+          help: 查看教程文档学习如何获取

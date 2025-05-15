@@ -1,0 +1,38 @@
+apiVersion: v1alpha1
+kind: "Role"
+metadata:
+  name: role-template-manage-indexnow
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/dependencies: |
+      [ "role-template-view-indexnow" ]
+    rbac.authorization.halo.run/module: "indexNow"
+    rbac.authorization.halo.run/display-name: "indexNow管理"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["plugin:indexnow:manage"]
+rules:
+  - apiGroups: [ "indexnow.lik.cc" ]
+    resources: [ "handsomeindexnow" ]
+    verbs: [ "create", "patch", "update", "delete", "deletecollection" ]
+
+---
+
+apiVersion: v1alpha1
+kind: "Role"
+metadata:
+  name: role-template-view-indexnow
+  labels:
+    halo.run/role-template: "true"
+  annotations:
+    rbac.authorization.halo.run/module: "indexNow"
+    rbac.authorization.halo.run/display-name: "indexNow查看"
+    rbac.authorization.halo.run/ui-permissions: |
+      ["plugin:indexnow:view"]
+rules:
+  - apiGroups: [ "indexnow.lik.cc" ]
+    resources: [ "handsomeindexnow" ]
+    verbs: [ "get", "list" ]
+  - apiGroups: [ "api.indexnow.lik.cc" ]
+    resources: [ "indexnow" ]
+    verbs: [ "list" ]
