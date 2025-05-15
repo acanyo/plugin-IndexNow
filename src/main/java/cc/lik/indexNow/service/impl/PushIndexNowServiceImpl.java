@@ -40,7 +40,7 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
                 String permalink = post.getStatus().getPermalink();
                 String postUrl = config.getSiteUrl() + permalink;
                 String indexNowKey = config.getIndexNowKey();
-                
+
                 return Mono.fromCallable(() -> {
                     Path keyFile = staticDir.resolve(indexNowKey + ".txt");
                     if (!Files.exists(staticDir)) {
@@ -68,6 +68,10 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
                         .retrieve()
                         .bodyToMono(String.class)
                         .flatMap(response -> saveLog(postUrl, "推送成功: " + response)
+                            .then(Mono.fromRunnable(() -> {
+                                post.getMetadata().getLabels().put("indexNowSuccessful", "true");
+                                extensionClient.update(post);
+                            }))
                             .thenReturn(response))
                         .onErrorResume(error -> saveLog(postUrl, "推送失败: " + error.getMessage())
                             .then(Mono.error(error)));
