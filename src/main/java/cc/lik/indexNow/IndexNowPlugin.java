@@ -4,8 +4,11 @@ import cc.lik.indexNow.entity.HandsomeIndexNowLogs;
 import org.springframework.stereotype.Component;
 import run.halo.app.extension.Scheme;
 import run.halo.app.extension.SchemeManager;
+import run.halo.app.extension.index.IndexSpec;
 import run.halo.app.plugin.BasePlugin;
 import run.halo.app.plugin.PluginContext;
+
+import static run.halo.app.extension.index.IndexAttributeFactory.simpleAttribute;
 
 /**
  * <p>Plugin main class to manage the lifecycle of the plugin.</p>
@@ -27,7 +30,23 @@ public class IndexNowPlugin extends BasePlugin {
 
     @Override
     public void start() {
-        schemeManager.register(HandsomeIndexNowLogs.class);
+        schemeManager.register(HandsomeIndexNowLogs.class,indexSpecs -> {
+        indexSpecs.add(new IndexSpec()
+            .setName("logsSpec.pushUrl")
+            .setIndexFunc(
+                simpleAttribute(HandsomeIndexNowLogs.class,
+                    indexNowLogs -> indexNowLogs.getLogsSpec().getPushUrl())));
+        indexSpecs.add(new IndexSpec()
+            .setName("logsSpec.pushTime")
+            .setIndexFunc(
+                simpleAttribute(HandsomeIndexNowLogs.class,
+                    indexNowLogs -> String.valueOf(indexNowLogs.getLogsSpec().getPushTime()))));
+        indexSpecs.add(new IndexSpec()
+            .setName("logsSpec.message")
+            .setIndexFunc(
+                simpleAttribute(HandsomeIndexNowLogs.class,
+                    indexNowLogs -> String.valueOf(indexNowLogs.getLogsSpec().getMessage()))));
+    });
     }
 
     @Override

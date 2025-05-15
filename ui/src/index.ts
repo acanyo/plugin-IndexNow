@@ -1,7 +1,9 @@
 import { definePlugin } from "@halo-dev/console-shared";
 import HomeView from "./views/HomeView.vue";
-import { IconPlug } from "@halo-dev/components";
+import {Dialog, IconPlug, Toast, VDropdownDivider, VDropdownItem} from "@halo-dev/components";
 import { markRaw } from "vue";
+import type { ListedPost } from "@halo-dev/api-client";
+import axios, {AxiosError} from "axios";
 
 export default definePlugin({
   components: {},
@@ -25,5 +27,53 @@ export default definePlugin({
       },
     },
   ],
-  extensionPoints: {},
+  extensionPoints: {
+    'post:list-item:operation:create': () => {
+      return [
+        {
+          priority: 21,
+          component: markRaw(VDropdownItem),
+          label: '同步IndexNow索引',
+          visible: true,
+          action: async (item?: ListedPost) => {
+            if (!item) return;
+            Dialog.warning({
+              title: '同步IndexNow索引',
+              description:
+                '确定同步此文章吗?',
+              onConfirm: async () => {
+                try {
+                  await axios.post(
+                    `/apis/api.indexnow.lik.cc/v1alpha1/push`,
+                    item.post,
+                    {
+                      headers: {
+                        'Content-Type': 'application/json',
+                      },
+                    }
+                  );
+                  Toast.success('同步IndexNow索引成功！');
+                } catch (error) {
+                  if (error instanceof AxiosError) {
+                    const data = error.response?.data;
+                    let msg = '同步失败，请重试';
+                    if (typeof data === 'string') {
+                      msg = data;
+                    } else if (data?.detail) {
+                      msg = data.detail;
+                    } else if (data?.message) {
+                      msg = data.message;
+                    } else if (data?.error) {
+                      msg = data.error;
+                    }
+                    Toast.error(msg);
+                  }
+                }
+              },
+            });
+          },
+        },
+      ];
+    },
+  },
 });
