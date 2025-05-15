@@ -36,18 +36,6 @@ spec:
             height: "120px"
             style:
               margin-left: "80px"
-        - $formkit: radio
-          name: enablePush
-          id: enablePush
-          key: enablePush
-          label: 是否启用indexNow推送
-          help: 禁用后将不开启主动推送，可通过手动推送
-          value: true
-          options:
-            - label: 启用
-              value: true
-            - label: 关闭
-              value: false
         - $formkit: text
           name: siteUrl
           id: siteUrl

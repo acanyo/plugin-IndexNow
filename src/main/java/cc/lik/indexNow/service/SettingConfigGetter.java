@@ -9,7 +9,6 @@ public interface SettingConfigGetter {
     @Data
     class BasicConfig {
         public static final String GROUP = "basic";
-        private Boolean enablePush;
         private String siteUrl;
         private String indexNowKey;
     }
