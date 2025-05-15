@@ -14,6 +14,5 @@
 
 
 
-export * from './api/api-indexnow-lik-cc-v1alpha1-indexnow-api';
 export * from './api/handsome-index-now-logs-v1alpha1-api';
 

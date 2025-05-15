@@ -9,7 +9,7 @@ import {
   VPageHeader,
   Toast,
   VSpace,
-  VStatusDot,
+  VStatusDot, Dialog,
 } from "@halo-dev/components";
 import { useQuery } from "@tanstack/vue-query";
 import { useRouteQuery } from "@vueuse/router";
@@ -19,8 +19,8 @@ import { indexNowApiClient } from "@/api";
 import type { HandsomeIndexNowLogs } from "@/api/generated/models/handsome-index-now-logs";
 import type { HandsomeIndexNowLogsList } from "@/api/generated/models/handsome-index-now-logs-list";
 import IconUpload from "~icons/ri/upload-cloud-line";
-import IconArrowLeft from "~icons/ri/arrow-left-line";
 import IconParkHelp from '~icons/icon-park-outline/help';
+import {axiosInstance} from "@halo-dev/api-client";
 
 defineOptions({
   name: "LogsView",
@@ -91,7 +91,23 @@ const statusText = (message: string) => {
   }
   return "未知";
 };
-
+function handleClear() {
+  Dialog.warning({
+    title: "清空记录",
+    description: "确定要清空所有推送记录吗？此操作不可恢复。",
+    async onConfirm() {
+      try {
+        await axiosInstance.delete("/apis/api.indexnow.lik.cc/v1alpha1/indexnow/clear")
+          .then((res: any) => {
+            Toast.success("清空成功");
+          });
+      } catch (e) {
+        console.error("", e);
+      }
+      refetch();
+    },
+  });
+}
 function copyMessage(msg: string) {
   if (!msg) return;
   navigator.clipboard.writeText(msg).then(() => {
@@ -110,17 +126,6 @@ function copyMessage(msg: string) {
     <template #actions>
       <VSpace>
         <VButton
-          :route="{ name: 'IndexNow' }"
-          type="default"
-          size="sm"
-          class="!bg-gray-100 hover:!bg-gray-200"
-        >
-          <template #icon>
-            <IconArrowLeft class="mr-2" />
-          </template>
-          返回
-        </VButton>
-        <VButton
           type="default"
           size="sm"
           class="!bg-gray-100 hover:!bg-gray-200"
@@ -131,6 +136,7 @@ function copyMessage(msg: string) {
           </template>
           刷新
         </VButton>
+        <VButton type="danger" @click="handleClear()"> 清空 </VButton>
       </VSpace>
     </template>
   </VPageHeader>

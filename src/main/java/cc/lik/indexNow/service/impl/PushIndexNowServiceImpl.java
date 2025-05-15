@@ -128,6 +128,12 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
         .then();
     }
 
+    @Override
+    public Mono<Void> clearLogs() {
+        return client.list(HandsomeIndexNowLogs.class, null, null).flatMap(client::delete)
+        .then();
+    }
+
     private record IndexNowRequest(
         String host,
         String key,

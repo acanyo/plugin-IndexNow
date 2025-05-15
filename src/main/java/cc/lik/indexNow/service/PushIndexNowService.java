@@ -15,10 +15,15 @@ public interface PushIndexNowService {
      * 403 Forbidden
      * In case of key not valid (e.g. key not found, file found but key not in the file)
      * 422 Unprocessable Entity
-     * In case of URLs don’t belong to the host or the key is not matching the schema in the protocol
+     * In case of URLs don't belong to the host or the key is not matching the schema in the protocol
      * 429
      * Too Many Requests
      * Too Many Requests (potential Spam)
      */
     Mono<String> pushIndexNow(Post post);
+
+    /**
+     * 清空所有 IndexNow 推送日志
+     */
+    Mono<Void> clearLogs();
 }

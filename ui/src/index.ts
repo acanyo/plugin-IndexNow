@@ -44,7 +44,7 @@ export default definePlugin({
               onConfirm: async () => {
                 try {
                   await axios.post(
-                    `/apis/api.indexnow.lik.cc/v1alpha1/push`,
+                    `/apis/api.indexnow.lik.cc/v1alpha1/indexnow/push`,
                     item.post,
                     {
                       headers: {

@@ -5,7 +5,7 @@
     "version" : "2.20.15"
   },
   "servers" : [ {
-    "url" : "http://localhost:49273",
+    "url" : "http://localhost:58130",
     "description" : "Generated server url"
   } ],
   "security" : [ {
@@ -13,48 +13,6 @@
     "bearerAuth" : [ ]
   } ],
   "paths" : {
-    "/apis/api.indexnow.lik.cc/v1alpha1/push" : {
-      "post" : {
-        "description" : "推送文章到 IndexNow",
-        "operationId" : "Push IndexNow",
-        "requestBody" : {
-          "content" : {
-            "*/*" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/Post"
-              }
-            }
-          },
-          "description" : "要推送的文章",
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            },
-            "description" : "推送成功"
-          },
-          "400" : {
-            "description" : "请求格式错误"
-          },
-          "403" : {
-            "description" : "key 无效"
-          },
-          "422" : {
-            "description" : "URL 不属于该主机或 key 不匹配"
-          },
-          "429" : {
-            "description" : "请求过于频繁"
-          }
-        },
-        "tags" : [ "api.indexnow.lik.cc/v1alpha1/indexnow" ]
-      }
-    },
     "/apis/indexnow.lik.cc/v1alpha1/handsomeindexnowlogs" : {
       "get" : {
         "description" : "List HandsomeIndexNowLogs",
@@ -288,34 +246,6 @@
           }
         }
       },
-      "Condition" : {
-        "required" : [ "lastTransitionTime", "status", "type" ],
-        "type" : "object",
-        "properties" : {
-          "lastTransitionTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "message" : {
-            "maxLength" : 32768,
-            "type" : "string"
-          },
-          "reason" : {
-            "maxLength" : 1024,
-            "pattern" : "^[A-Za-z]([A-Za-z0-9_,:]*[A-Za-z0-9_])?$",
-            "type" : "string"
-          },
-          "status" : {
-            "type" : "string",
-            "enum" : [ "TRUE", "FALSE", "UNKNOWN" ]
-          },
-          "type" : {
-            "maxLength" : 316,
-            "pattern" : "^([a-z0-9]([-a-z0-9]*[a-z0-9])?(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?)*/)?(([A-Za-z0-9][-A-Za-z0-9_.]*)?[A-Za-z0-9])$",
-            "type" : "string"
-          }
-        }
-      },
       "CopyOperation" : {
         "required" : [ "op", "from", "path" ],
         "type" : "object",
@@ -335,19 +265,6 @@
             "type" : "string",
             "description" : "A JSON Pointer path pointing to the location to move/copy from.",
             "example" : "/a/b/c"
-          }
-        }
-      },
-      "Excerpt" : {
-        "required" : [ "autoGenerate" ],
-        "type" : "object",
-        "properties" : {
-          "autoGenerate" : {
-            "type" : "boolean",
-            "default" : true
-          },
-          "raw" : {
-            "type" : "string"
           }
         }
       },
@@ -508,162 +425,6 @@
             "type" : "string",
             "description" : "A JSON Pointer path pointing to the location to move/copy from.",
             "example" : "/a/b/c"
-          }
-        }
-      },
-      "Post" : {
-        "required" : [ "apiVersion", "kind", "metadata", "spec" ],
-        "type" : "object",
-        "properties" : {
-          "apiVersion" : {
-            "type" : "string"
-          },
-          "kind" : {
-            "type" : "string"
-          },
-          "metadata" : {
-            "$ref" : "#/components/schemas/Metadata"
-          },
-          "spec" : {
-            "$ref" : "#/components/schemas/PostSpec"
-          },
-          "status" : {
-            "$ref" : "#/components/schemas/PostStatus"
-          }
-        }
-      },
-      "PostSpec" : {
-        "required" : [ "allowComment", "deleted", "excerpt", "pinned", "priority", "publish", "slug", "title", "visible" ],
-        "type" : "object",
-        "properties" : {
-          "allowComment" : {
-            "type" : "boolean",
-            "default" : true
-          },
-          "baseSnapshot" : {
-            "type" : "string"
-          },
-          "categories" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "cover" : {
-            "type" : "string"
-          },
-          "deleted" : {
-            "type" : "boolean",
-            "default" : false
-          },
-          "excerpt" : {
-            "$ref" : "#/components/schemas/Excerpt"
-          },
-          "headSnapshot" : {
-            "type" : "string"
-          },
-          "htmlMetas" : {
-            "type" : "array",
-            "items" : {
-              "type" : "object",
-              "additionalProperties" : {
-                "type" : "string"
-              }
-            }
-          },
-          "owner" : {
-            "type" : "string"
-          },
-          "pinned" : {
-            "type" : "boolean",
-            "default" : false
-          },
-          "priority" : {
-            "type" : "integer",
-            "format" : "int32",
-            "default" : 0
-          },
-          "publish" : {
-            "type" : "boolean",
-            "default" : false
-          },
-          "publishTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "releaseSnapshot" : {
-            "type" : "string"
-          },
-          "slug" : {
-            "minLength" : 1,
-            "type" : "string"
-          },
-          "tags" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "template" : {
-            "type" : "string"
-          },
-          "title" : {
-            "minLength" : 1,
-            "type" : "string"
-          },
-          "visible" : {
-            "type" : "string",
-            "default" : "PUBLIC",
-            "enum" : [ "PUBLIC", "INTERNAL", "PRIVATE" ]
-          }
-        }
-      },
-      "PostStatus" : {
-        "type" : "object",
-        "properties" : {
-          "commentsCount" : {
-            "type" : "integer",
-            "format" : "int32"
-          },
-          "conditions" : {
-            "type" : "array",
-            "properties" : {
-              "empty" : {
-                "type" : "boolean"
-              }
-            },
-            "items" : {
-              "$ref" : "#/components/schemas/Condition"
-            }
-          },
-          "contributors" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "excerpt" : {
-            "type" : "string"
-          },
-          "hideFromList" : {
-            "type" : "boolean"
-          },
-          "inProgress" : {
-            "type" : "boolean"
-          },
-          "lastModifyTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "observedVersion" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "permalink" : {
-            "type" : "string"
-          },
-          "phase" : {
-            "type" : "string"
           }
         }
       },

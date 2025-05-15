@@ -27,7 +27,7 @@ public class IndexNowEndpoint implements CustomEndpoint {
     public RouterFunction<ServerResponse> endpoint() {
         final var tag = "api.indexnow.lik.cc/v1alpha1/indexnow";
         return SpringdocRouteBuilder.route()
-            .POST("/push", this::pushIndexNow, builder -> {
+            .POST("/indexnow/push", this::pushIndexNow, builder -> {
                 builder.operationId("Push IndexNow")
                     .tag(tag)
                     .description("推送文章到 IndexNow")
@@ -58,6 +58,15 @@ public class IndexNowEndpoint implements CustomEndpoint {
                         .description("请求过于频繁")
                     );
             })
+            .DELETE("/indexnow/clear", this::clearLogs, builder -> {
+                builder.operationId("Clear IndexNow Logs")
+                    .tag(tag)
+                    .description("清空所有 IndexNow 推送日志")
+                    .response(responseBuilder()
+                        .responseCode("204")
+                        .description("清理成功，无内容返回")
+                    );
+            })
             .build();
     }
 
@@ -76,6 +85,17 @@ public class IndexNowEndpoint implements CustomEndpoint {
             .onErrorResume(e -> {
                 log.error("Failed to push to IndexNow", e);
                 return ServerResponse.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .bodyValue(e.getMessage());
+            });
+    }
+
+    private Mono<ServerResponse> clearLogs(ServerRequest request) {
+        return pushIndexNowService.clearLogs()
+            .then(ServerResponse.noContent().build())
+            .onErrorResume(e -> {
+                log.error("Failed to clear IndexNow logs", e);
+                return ServerResponse.status(500)
                     .contentType(MediaType.APPLICATION_JSON)
                     .bodyValue(e.getMessage());
             });
