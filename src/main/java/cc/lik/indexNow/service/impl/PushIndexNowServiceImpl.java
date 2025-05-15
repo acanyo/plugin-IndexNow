@@ -3,6 +3,11 @@ package cc.lik.indexNow.service.impl;
 import cc.lik.indexNow.entity.HandsomeIndexNowLogs;
 import cc.lik.indexNow.service.PushIndexNowService;
 import cc.lik.indexNow.service.SettingConfigGetter;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -13,13 +18,7 @@ import reactor.core.scheduler.Schedulers;
 import run.halo.app.core.extension.content.Post;
 import run.halo.app.extension.ExtensionClient;
 import run.halo.app.extension.Metadata;
-
-import java.io.IOException;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
+import run.halo.app.extension.ReactiveExtensionClient;
 
 @Slf4j
 @Component
@@ -28,9 +27,34 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
 
     private final SettingConfigGetter settingConfigGetter;
     private final WebClient webClient;
-    private final ExtensionClient extensionClient;
+    private final ReactiveExtensionClient client;
     private static final Path staticDir = Paths.get(System.getProperty("user.home"), "/.halo2/static");
     private final String indexNowUrl = "https://api.indexnow.org/IndexNow";
+
+    private Mono<Void> handleSuccess(Post post, String postUrl, String response) {
+        log.info("IndexNow推送成功: {}", response);
+        log.info("开始更新文章标签");
+        return client.fetch(Post.class, post.getMetadata().getName())
+            .switchIfEmpty(Mono.error(new RuntimeException("文章不存在")))
+            .flatMap(latestPost -> {
+                log.info("获取到最新文章数据");
+                latestPost.getMetadata().getLabels().put("indexnow/lik.cc/indexNowSuccessful", "true");
+                return client.update(latestPost)
+                    .retry(3)
+                    .doOnNext(v -> log.info("文章标签更新中..."))
+                    .doOnSuccess(v -> log.info("文章标签更新成功"))
+                    .doOnError(e -> log.error("文章标签更新失败", e));
+            })
+            .then(Mono.defer(() -> {
+                log.info("准备记录成功日志");
+                return saveLog(postUrl, "推送成功: " + response);
+            }))
+            .doOnSuccess(v -> log.info("成功日志记录完成"))
+            .doOnError(e -> {
+                log.error("记录成功日志失败", e);
+            })
+            .then();
+    }
 
     @Override
     public Mono<String> pushIndexNow(Post post) {
@@ -40,7 +64,7 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
                 String permalink = post.getStatus().getPermalink();
                 String postUrl = config.getSiteUrl() + permalink;
                 String indexNowKey = config.getIndexNowKey();
-
+                
                 return Mono.fromCallable(() -> {
                     Path keyFile = staticDir.resolve(indexNowKey + ".txt");
                     if (!Files.exists(staticDir)) {
@@ -67,14 +91,22 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
                         .bodyValue(request)
                         .retrieve()
                         .bodyToMono(String.class)
-                        .flatMap(response -> saveLog(postUrl, "推送成功: " + response)
-                            .then(Mono.fromRunnable(() -> {
-                                post.getMetadata().getLabels().put("indexNowSuccessful", "true");
-                                extensionClient.update(post);
-                            }))
-                            .thenReturn(response))
-                        .onErrorResume(error -> saveLog(postUrl, "推送失败: " + error.getMessage())
-                            .then(Mono.error(error)));
+                        .defaultIfEmpty("200")
+                        .doOnNext(response -> log.info("收到IndexNow响应: {}", response))
+                        .flatMap(response -> {
+                            log.info("开始处理成功响应");
+                            return handleSuccess(post, postUrl, response)
+                                .subscribeOn(Schedulers.boundedElastic())
+                                .doOnSuccess(v -> log.info("处理成功响应完成"))
+                                .doOnError(error -> log.error("处理成功响应时发生错误", error))
+                                .thenReturn(response);
+                        })
+                        .onErrorResume(error -> {
+                            log.error("IndexNow推送失败", error);
+                            return saveLog(postUrl, "推送失败: " + error.getMessage())
+                                .subscribeOn(Schedulers.boundedElastic())
+                                .then(Mono.error(error));
+                        });
                 }));
             });
     }
@@ -92,7 +124,7 @@ public class PushIndexNowServiceImpl implements PushIndexNowService {
             return logs;
         })
         .subscribeOn(Schedulers.boundedElastic())
-        .flatMap(logs -> Mono.fromRunnable(() -> extensionClient.create(logs)))
+        .flatMap(client::create)
         .then();
     }
 

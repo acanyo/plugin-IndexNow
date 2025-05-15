@@ -53,4 +53,8 @@ build {
 
 halo {
     version = '2.20'
+    // 开启 debug 断点模式
+    debug = true
+    // 控制台会挂起，等待点击 Attach debugger 按钮
+    suspend = true
 }
