@@ -1,5 +1,5 @@
 import { definePlugin } from "@halo-dev/console-shared";
-import LogsView from "./views/LogsView.vue";
+import LogsView from "@/views/LogsView.vue";
 import {Dialog, IconUpload, Toast, VDropdownItem} from "@halo-dev/components";
 import { markRaw } from "vue";
 import type { ListedPost } from "@halo-dev/api-client";
@@ -12,15 +12,15 @@ export default definePlugin({
       parentName: "ToolsRoot",
       route: {
         path: "/indexnow",
-        name: "IndexNow推送日志",
+        name: "IndexNow",
         component: LogsView,
         meta: {
           title: "IndexNow推送日志",
+          description: "管理你的IndexNow推送日志",
           searchable: true,
           permissions: ["plugin:indexnow:view"],
           menu: {
             name: "IndexNow推送日志",
-            group: "工具",
             icon: markRaw(IconUpload),
             priority: 0,
           },
