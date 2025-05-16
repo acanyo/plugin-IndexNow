@@ -119,7 +119,7 @@ function copyMessage(msg: string) {
 </script>
 
 <template>
-  <VPageHeader title="推送日志">
+  <VPageHeader title="indexNow推送日志">
     <template #icon>
       <IconUpload class="mr-2 self-center" />
     </template>
