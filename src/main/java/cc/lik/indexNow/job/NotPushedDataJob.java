@@ -18,9 +18,9 @@ import reactor.core.publisher.Mono;
 public class NotPushedDataJob {
     private PushIndexNowService pushSvc;
     private final ReactiveExtensionClient client;
-
-    @Scheduled(cron = "0 0 0 * * ?")
-    public void clean() {
+    //按照indexNow文档说明 未更新数据的url文章不需要推送 故此暂时去掉 定时任务 如果有失败 建议手动尝试
+    // @Scheduled(cron = "0 0 0 * * ?")
+   /* public void clean() {
         log.info("开始执行未同步文章推送任务");
         ListOptions listOptions = ListOptions.builder()
             .labelSelector()
@@ -39,5 +39,5 @@ public class NotPushedDataJob {
             .doOnComplete(() -> log.info("未同步文章推送任务完成"))
             .doOnError(error -> log.error("未同步文章推送任务异常: {}", error.getMessage()))
             .subscribe();
-    }
+    }*/
 }
